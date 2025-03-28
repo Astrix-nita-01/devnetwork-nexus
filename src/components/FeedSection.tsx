@@ -1,11 +1,17 @@
 
-import React from 'react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import React, { useState } from 'react';
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Avatar } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { ArrowUp, Code, Github, Heart, MessageSquare, Share2, Star } from 'lucide-react';
+import { Filter, Plus, Star, ArrowUpDown } from 'lucide-react';
+import ScrollReveal from './ScrollReveal';
+import EnhancedFeedPost from './EnhancedFeedPost';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface FeedPost {
   id: number;
@@ -28,7 +34,8 @@ interface FeedPost {
 }
 
 const FeedSection: React.FC = () => {
-  const feedPosts: FeedPost[] = [
+  const [sortOrder, setSortOrder] = useState<'latest' | 'popular'>('latest');
+  const [feedPosts, setFeedPosts] = useState<FeedPost[]>([
     {
       id: 1,
       author: {
@@ -76,107 +83,99 @@ const FeedSection: React.FC = () => {
       shares: 16,
       tags: ["github", "actions", "automation"],
       repoLink: "#"
+    },
+    {
+      id: 4,
+      author: {
+        name: "Ava Rodriguez",
+        avatar: "AR",
+        role: "ML Engineer"
+      },
+      timeAgo: "2d ago",
+      content: "Implemented a new optimization technique for our recommendation algorithm. Seeing a 30% improvement in inference speed!",
+      likes: 93,
+      comments: 31,
+      shares: 22,
+      tags: ["machinelearning", "optimization", "algorithms"],
+      codeSnippet: {
+        language: "python",
+        code: "def optimize_inference(model, input_data):\n    # Cache previous results\n    if hasattr(model, '_cache') and input_data.id in model._cache:\n        return model._cache[input_data.id]\n    \n    # Quantize weights for faster computation\n    quantized = quantize_weights(model.weights)\n    \n    # Run inference with optimized weights\n    result = model.forward(input_data, weights=quantized)\n    \n    # Cache results\n    if not hasattr(model, '_cache'):\n        model._cache = {}\n    model._cache[input_data.id] = result\n    \n    return result"
+      }
     }
-  ];
+  ]);
+
+  const handleSortChange = (order: 'latest' | 'popular') => {
+    setSortOrder(order);
+    
+    // Sort the posts based on the selected order
+    const sortedPosts = [...feedPosts];
+    if (order === 'latest') {
+      // Sort by id (higher id means newer post in our mock data)
+      sortedPosts.sort((a, b) => b.id - a.id);
+    } else {
+      // Sort by likes
+      sortedPosts.sort((a, b) => b.likes - a.likes);
+    }
+    
+    setFeedPosts(sortedPosts);
+  };
 
   return (
-    <section className="py-16 bg-gray-950">
+    <section className="py-8">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Developer Feed</h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
-            Stay updated with the latest contributions, insights, and achievements from the developer community
-          </p>
+        <div className="mb-6 flex justify-between items-center">
+          <ScrollReveal>
+            <div className="flex items-center gap-4">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="gap-2">
+                    <Filter className="h-4 w-4" />
+                    <span>{sortOrder === 'latest' ? 'Latest' : 'Popular'}</span>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start">
+                  <DropdownMenuItem onClick={() => handleSortChange('latest')}>
+                    <ArrowUpDown className="h-4 w-4 mr-2" />
+                    Latest
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleSortChange('popular')}>
+                    <Star className="h-4 w-4 mr-2" />
+                    Popular
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              
+              <div className="hidden md:flex gap-2">
+                {["All", "Code", "Discussion", "Projects", "Jobs"].map((tag) => (
+                  <Button key={tag} variant="ghost" size="sm">
+                    {tag}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </ScrollReveal>
+          
+          <ScrollReveal delay={200}>
+            <Button className="gap-2" size="sm">
+              <Plus className="h-4 w-4" />
+              New Post
+            </Button>
+          </ScrollReveal>
         </div>
 
         <div className="grid grid-cols-1 gap-8 max-w-4xl mx-auto">
-          <ScrollArea className="h-[600px] rounded-md border">
-            {feedPosts.map((post) => (
-              <div 
-                key={post.id} 
-                className="animate-slide-up opacity-0"
-                style={{ 
-                  animationDelay: `${post.id * 150}ms`,
-                  animationFillMode: 'forwards'
-                }}
-              >
-                <Card className="mb-4 bg-gray-900 border-gray-800 hover:border-primary/30 transition-all duration-300">
-                  <CardHeader className="pb-2">
-                    <div className="flex justify-between items-start">
-                      <div className="flex items-center">
-                        <Avatar className="mr-3 h-9 w-9 bg-primary text-primary-foreground">
-                          <div>{post.author.avatar}</div>
-                        </Avatar>
-                        <div>
-                          <div className="font-medium">{post.author.name}</div>
-                          <div className="text-xs text-gray-500">{post.author.role} · {post.timeAgo}</div>
-                        </div>
-                      </div>
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
-                        <ArrowUp className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="pb-3">
-                    <p className="mb-3">{post.content}</p>
-                    
-                    {post.codeSnippet && (
-                      <div className="bg-gray-950 rounded-md p-3 my-3 border border-gray-800 overflow-x-auto">
-                        <div className="flex items-center justify-between mb-2">
-                          <div className="text-xs text-gray-500">{post.codeSnippet.language}</div>
-                          <Button variant="ghost" size="sm" className="h-6 p-1">
-                            <Code className="h-3 w-3 mr-1" />
-                            <span className="text-xs">Copy</span>
-                          </Button>
-                        </div>
-                        <pre className="text-sm text-gray-300 whitespace-pre-wrap">
-                          <code>{post.codeSnippet.code}</code>
-                        </pre>
-                      </div>
-                    )}
-                    
-                    <div className="flex flex-wrap gap-2 mt-3">
-                      {post.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary" className="bg-gray-800 hover:bg-gray-700">
-                          #{tag}
-                        </Badge>
-                      ))}
-                    </div>
-                    
-                    {post.repoLink && (
-                      <div className="mt-3">
-                        <Button variant="outline" size="sm" className="w-full justify-start">
-                          <Github className="h-4 w-4 mr-2" />
-                          <span>View Repository</span>
-                        </Button>
-                      </div>
-                    )}
-                  </CardContent>
-                  <CardFooter className="pt-0 border-t border-gray-800">
-                    <div className="flex justify-between w-full text-gray-500 text-sm">
-                      <Button variant="ghost" size="sm" className="gap-1 text-gray-400 hover:text-primary">
-                        <Heart className="h-4 w-4" />
-                        <span>{post.likes}</span>
-                      </Button>
-                      <Button variant="ghost" size="sm" className="gap-1 text-gray-400 hover:text-primary">
-                        <MessageSquare className="h-4 w-4" />
-                        <span>{post.comments}</span>
-                      </Button>
-                      <Button variant="ghost" size="sm" className="gap-1 text-gray-400 hover:text-primary">
-                        <Share2 className="h-4 w-4" />
-                        <span>{post.shares}</span>
-                      </Button>
-                    </div>
-                  </CardFooter>
-                </Card>
-              </div>
+          <ScrollArea className="h-[600px] rounded-md border border-gray-800 p-4">
+            {feedPosts.map((post, index) => (
+              <EnhancedFeedPost key={post.id} post={post} index={index} />
             ))}
           </ScrollArea>
           
-          <div className="text-center mt-6 animate-fade-in">
-            <Button className="mx-auto">
-              Load More <Star className="ml-2 h-4 w-4" />
-            </Button>
+          <div className="text-center mt-6">
+            <ScrollReveal delay={400}>
+              <Button className="mx-auto">
+                Load More
+              </Button>
+            </ScrollReveal>
           </div>
         </div>
       </div>

@@ -25,6 +25,7 @@ const Navbar = () => {
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Profile', path: '/profile' },
+    { name: 'Feed', path: '/feed' }, // Added Feed link
     { name: 'Rankings', path: '/rankings' },
     { name: 'Analytics', path: '/analytics' },
     { name: 'Jobs', path: '/jobs' },

@@ -1,5 +1,5 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface ScrollRevealProps {
   children: React.ReactNode;
@@ -8,6 +8,7 @@ interface ScrollRevealProps {
   duration?: number;
   distance?: string;
   threshold?: number;
+  animation?: 'fade' | 'slide-up' | 'slide-left' | 'slide-right' | 'zoom' | 'blur';
 }
 
 const ScrollReveal: React.FC<ScrollRevealProps> = ({
@@ -16,9 +17,11 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
   delay = 0,
   duration = 800,
   distance = "20px",
-  threshold = 0.1
+  threshold = 0.1,
+  animation = 'slide-up'
 }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
   
   useEffect(() => {
     const observerOptions = {
@@ -29,14 +32,8 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
     const handleIntersect: IntersectionObserverCallback = (entries, observer) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          const target = entry.target as HTMLElement;
-          target.style.transitionProperty = 'opacity, transform';
-          target.style.transitionDuration = `${duration}ms`;
-          target.style.transitionTimingFunction = 'cubic-bezier(0.4, 0, 0.2, 1)';
-          target.style.transitionDelay = `${delay}ms`;
-          target.style.opacity = '1';
-          target.style.transform = 'translateY(0)';
-          observer.unobserve(target);
+          setIsVisible(true);
+          observer.unobserve(entry.target);
         }
       });
     };
@@ -44,8 +41,6 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
     const observer = new IntersectionObserver(handleIntersect, observerOptions);
     
     if (ref.current) {
-      ref.current.style.opacity = '0';
-      ref.current.style.transform = `translateY(${distance})`;
       observer.observe(ref.current);
     }
     
@@ -54,10 +49,45 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
         observer.unobserve(ref.current);
       }
     };
-  }, [delay, duration, distance, threshold]);
+  }, [threshold]);
+  
+  const getAnimationStyles = () => {
+    const baseStyles: React.CSSProperties = {
+      opacity: isVisible ? 1 : 0,
+      transition: `opacity ${duration}ms cubic-bezier(0.4, 0, 0.2, 1) ${delay}ms, transform ${duration}ms cubic-bezier(0.4, 0, 0.2, 1) ${delay}ms`
+    };
+    
+    if (!isVisible) {
+      switch (animation) {
+        case 'slide-up':
+          return { ...baseStyles, transform: `translateY(${distance})` };
+        case 'slide-left':
+          return { ...baseStyles, transform: `translateX(-${distance})` };
+        case 'slide-right':
+          return { ...baseStyles, transform: `translateX(${distance})` };
+        case 'zoom':
+          return { ...baseStyles, transform: 'scale(0.95)' };
+        case 'blur':
+          return { ...baseStyles, filter: 'blur(8px)' };
+        case 'fade':
+        default:
+          return baseStyles;
+      }
+    }
+    
+    return {
+      ...baseStyles,
+      transform: 'translateY(0) translateX(0) scale(1)',
+      filter: 'blur(0)'
+    };
+  };
   
   return (
-    <div ref={ref} className={className}>
+    <div 
+      ref={ref} 
+      className={className}
+      style={getAnimationStyles()}
+    >
       {children}
     </div>
   );

@@ -12,6 +12,7 @@ import Jobs from "./pages/Jobs";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import Notifications from "./pages/Notifications";
+import Feed from "./pages/Feed";
 import { useEffect } from "react";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => {
             <Route path="/rankings" element={<Rankings />} />
             <Route path="/analytics" element={<Analytics />} />
             <Route path="/jobs" element={<Jobs />} />
+            <Route path="/feed" element={<Feed />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/notifications" element={<Notifications />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
