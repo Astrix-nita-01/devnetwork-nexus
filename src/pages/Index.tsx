@@ -1,9 +1,11 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Github, BarChart3, Trophy, Users, Briefcase, ChevronRight, Star, Code, GitBranch, GitPullRequest } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import MainLayout from '@/components/MainLayout';
+import ScrollReveal from '@/components/ScrollReveal';
+import FeedSection from '@/components/FeedSection';
 
 const Index = () => {
   const features = [
@@ -28,6 +30,31 @@ const Index = () => {
       description: "Get discovered by companies based on your actual coding skills and open-source contributions, not just your resume."
     }
   ];
+
+  // Apply smooth scroll effect to hash links
+  useEffect(() => {
+    const handleHashLinkClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const link = target.closest('a');
+      
+      if (link && link.hash && link.hash.length > 0) {
+        e.preventDefault();
+        const targetElement = document.querySelector(link.hash);
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.getBoundingClientRect().top + window.scrollY - 100,
+            behavior: 'smooth'
+          });
+          
+          // Update URL without scrolling
+          history.pushState(null, '', link.hash);
+        }
+      }
+    };
+    
+    document.addEventListener('click', handleHashLinkClick);
+    return () => document.removeEventListener('click', handleHashLinkClick);
+  }, []);
 
   return (
     <MainLayout>
@@ -59,27 +86,29 @@ const Index = () => {
             
             {/* Stats */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-16 w-full max-w-3xl mx-auto">
-              <div className="glass-effect rounded-2xl p-6 shadow-subtle animate-scale-in">
+              <ScrollReveal className="glass-effect rounded-2xl p-6 shadow-subtle" delay={0}>
                 <div className="flex items-center justify-center mb-3 bg-primary/10 w-12 h-12 rounded-xl mx-auto">
                   <Code className="h-6 w-6 text-primary" />
                 </div>
                 <h3 className="text-3xl font-bold">12K+</h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm">Active Developers</p>
-              </div>
-              <div className="glass-effect rounded-2xl p-6 shadow-subtle animate-scale-in" style={{ animationDelay: "100ms" }}>
+              </ScrollReveal>
+              
+              <ScrollReveal className="glass-effect rounded-2xl p-6 shadow-subtle" delay={150}>
                 <div className="flex items-center justify-center mb-3 bg-primary/10 w-12 h-12 rounded-xl mx-auto">
                   <GitBranch className="h-6 w-6 text-primary" />
                 </div>
                 <h3 className="text-3xl font-bold">50M+</h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm">Contributions Tracked</p>
-              </div>
-              <div className="glass-effect rounded-2xl p-6 shadow-subtle animate-scale-in" style={{ animationDelay: "200ms" }}>
+              </ScrollReveal>
+              
+              <ScrollReveal className="glass-effect rounded-2xl p-6 shadow-subtle" delay={300}>
                 <div className="flex items-center justify-center mb-3 bg-primary/10 w-12 h-12 rounded-xl mx-auto">
                   <Briefcase className="h-6 w-6 text-primary" />
                 </div>
                 <h3 className="text-3xl font-bold">2.5K+</h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm">Hiring Companies</p>
-              </div>
+              </ScrollReveal>
             </div>
           </div>
         </div>
@@ -90,39 +119,45 @@ const Index = () => {
       </section>
       
       {/* Features Section */}
-      <section className="py-20 bg-white dark:bg-gray-950">
+      <section className="py-20 bg-gray-950">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold mb-4">A Complete Developer Platform</h2>
-            <p className="text-gray-600 dark:text-gray-400">
-              DevConnect brings together everything developers need to showcase their skills, connect with others, and advance their careers.
-            </p>
+            <ScrollReveal>
+              <h2 className="text-3xl font-bold mb-4">A Complete Developer Platform</h2>
+              <p className="text-gray-400">
+                DevConnect brings together everything developers need to showcase their skills, connect with others, and advance their careers.
+              </p>
+            </ScrollReveal>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {features.map((feature, index) => (
-              <div 
+              <ScrollReveal 
                 key={index} 
-                className="bg-gray-50 dark:bg-gray-900 p-6 rounded-2xl shadow-subtle border border-gray-100 dark:border-gray-800 hover:border-primary/20 dark:hover:border-primary/20 transition-all duration-300 hover:shadow-md"
+                className="bg-gray-900 p-6 rounded-2xl shadow-subtle border border-gray-800 hover:border-primary/20 transition-all duration-300 hover:shadow-md"
+                delay={index * 100}
               >
-                <div className="bg-white dark:bg-gray-800 rounded-xl p-3 w-14 h-14 flex items-center justify-center mb-4 shadow-sm">
+                <div className="bg-gray-800 rounded-xl p-3 w-14 h-14 flex items-center justify-center mb-4 shadow-sm">
                   {feature.icon}
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm">{feature.description}</p>
-              </div>
+                <p className="text-gray-400 text-sm">{feature.description}</p>
+              </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
       
+      {/* Feed Section */}
+      <FeedSection />
+      
       {/* Analytics Preview Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-900">
+      <section className="py-20 bg-gray-900">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-12">
-            <div>
+            <ScrollReveal className="animate-slide-right">
               <h2 className="text-3xl font-bold mb-6">Powerful Developer Analytics</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+              <p className="text-gray-400 mb-6">
                 Track your GitHub contributions, analyze your coding patterns, and gain insights into your development journey with our comprehensive analytics.
               </p>
               <ul className="space-y-4">
@@ -138,77 +173,83 @@ const Index = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <span className="text-gray-700 dark:text-gray-300">{item}</span>
+                    <span className="text-gray-300">{item}</span>
                   </li>
                 ))}
               </ul>
               <Button className="mt-8 button-glow">
                 Explore Analytics <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
-            </div>
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700">
-              <div className="bg-gray-50 dark:bg-gray-900 rounded-xl p-4">
-                <div className="h-64 bg-gradient-to-br from-primary/5 to-primary/10 dark:from-primary/10 dark:to-primary/20 rounded-lg flex items-center justify-center">
-                  <div className="text-center text-gray-500 dark:text-gray-400">
-                    <BarChart3 className="h-16 w-16 mx-auto mb-4 opacity-40" />
-                    <p>Analytics visualization preview</p>
+            </ScrollReveal>
+            
+            <ScrollReveal className="animate-slide-left" delay={200}>
+              <div className="bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-700">
+                <div className="bg-gray-900 rounded-xl p-4">
+                  <div className="h-64 bg-gradient-to-br from-primary/5 to-primary/10 rounded-lg flex items-center justify-center">
+                    <div className="text-center text-gray-500">
+                      <BarChart3 className="h-16 w-16 mx-auto mb-4 opacity-40" />
+                      <p>Analytics visualization preview</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-4 mt-4">
+                  <div className="bg-gray-900 p-3 rounded-lg">
+                    <p className="text-xs text-gray-500">Commits</p>
+                    <p className="text-2xl font-bold">1,240</p>
+                  </div>
+                  <div className="bg-gray-900 p-3 rounded-lg">
+                    <p className="text-xs text-gray-500">PRs</p>
+                    <p className="text-2xl font-bold">87</p>
+                  </div>
+                  <div className="bg-gray-900 p-3 rounded-lg">
+                    <p className="text-xs text-gray-500">Repos</p>
+                    <p className="text-2xl font-bold">32</p>
                   </div>
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-4 mt-4">
-                <div className="bg-gray-50 dark:bg-gray-900 p-3 rounded-lg">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Commits</p>
-                  <p className="text-2xl font-bold">1,240</p>
-                </div>
-                <div className="bg-gray-50 dark:bg-gray-900 p-3 rounded-lg">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">PRs</p>
-                  <p className="text-2xl font-bold">87</p>
-                </div>
-                <div className="bg-gray-50 dark:bg-gray-900 p-3 rounded-lg">
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Repos</p>
-                  <p className="text-2xl font-bold">32</p>
-                </div>
-              </div>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
       
       {/* Ranking Section */}
-      <section className="py-20 bg-white dark:bg-gray-950">
+      <section className="py-20 bg-gray-950">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-12">
-            <div className="order-2 md:order-1 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold">Global Developer Rankings</h3>
-                <span className="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full">Top Contributors</span>
-              </div>
-              <div className="space-y-4">
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <div key={index} className="flex items-center p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
-                    <span className="font-bold text-gray-500 dark:text-gray-400 w-8">{index + 1}</span>
-                    <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center mr-3">
-                      <Users className="w-4 h-4 text-primary" />
+            <ScrollReveal className="order-2 md:order-1 animate-slide-right" delay={200}>
+              <div className="bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-700">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold">Global Developer Rankings</h3>
+                  <span className="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full">Top Contributors</span>
+                </div>
+                <div className="space-y-4">
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <div key={index} className="flex items-center p-3 bg-gray-900 rounded-lg">
+                      <span className="font-bold text-gray-500 w-8">{index + 1}</span>
+                      <div className="w-8 h-8 bg-primary/20 rounded-full flex items-center justify-center mr-3">
+                        <Users className="w-4 h-4 text-primary" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="font-medium">Developer {index + 1}</p>
+                      </div>
+                      <div className="flex items-center">
+                        <Star className="w-4 h-4 text-amber-500 mr-1" />
+                        <span className="text-sm font-medium">{5432 - index * 427}</span>
+                      </div>
                     </div>
-                    <div className="flex-1">
-                      <p className="font-medium">Developer {index + 1}</p>
-                    </div>
-                    <div className="flex items-center">
-                      <Star className="w-4 h-4 text-amber-500 mr-1" />
-                      <span className="text-sm font-medium">{5432 - index * 427}</span>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                <div className="mt-4 text-center">
+                  <Link to="/rankings" className="text-primary text-sm font-medium inline-flex items-center hover:underline">
+                    View Full Rankings <ChevronRight className="ml-1 h-4 w-4" />
+                  </Link>
+                </div>
               </div>
-              <div className="mt-4 text-center">
-                <Link to="/rankings" className="text-primary text-sm font-medium inline-flex items-center hover:underline">
-                  View Full Rankings <ChevronRight className="ml-1 h-4 w-4" />
-                </Link>
-              </div>
-            </div>
-            <div className="order-1 md:order-2">
+            </ScrollReveal>
+            
+            <ScrollReveal className="order-1 md:order-2 animate-slide-left">
               <h2 className="text-3xl font-bold mb-6">Global Rankings & Recognition</h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+              <p className="text-gray-400 mb-6">
                 Gain recognition for your contributions through our Codeforces-inspired ranking system. See how you stack up against developers worldwide.
               </p>
               <ul className="space-y-4">
@@ -224,14 +265,14 @@ const Index = () => {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                     </div>
-                    <span className="text-gray-700 dark:text-gray-300">{item}</span>
+                    <span className="text-gray-300">{item}</span>
                   </li>
                 ))}
               </ul>
               <Button className="mt-8 button-glow">
                 View Rankings <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
-            </div>
+            </ScrollReveal>
           </div>
         </div>
       </section>
@@ -241,18 +282,20 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/90 to-blue-600/90 -z-10"></div>
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00eiIvPjwvZz48L2c+PC9zdmc+')] opacity-20 -z-10"></div>
         
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Ready to showcase your true developer potential?</h2>
-            <p className="text-xl text-white/80 mb-8">
-              Join thousands of developers using DevConnect to highlight their skills, track their progress, and connect with opportunities.
-            </p>
-            <Button size="lg" variant="secondary" className="button-glow">
-              <Github className="mr-2 h-5 w-5" />
-              Get Started with GitHub
-            </Button>
+        <ScrollReveal>
+          <div className="container mx-auto px-4 text-center">
+            <div className="max-w-3xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Ready to showcase your true developer potential?</h2>
+              <p className="text-xl text-white/80 mb-8">
+                Join thousands of developers using DevConnect to highlight their skills, track their progress, and connect with opportunities.
+              </p>
+              <Button size="lg" variant="secondary" className="button-glow">
+                <Github className="mr-2 h-5 w-5" />
+                Get Started with GitHub
+              </Button>
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
     </MainLayout>
   );
