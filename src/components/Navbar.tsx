@@ -1,7 +1,16 @@
 
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Moon, Bell, Search as SearchIcon, Menu, X } from 'lucide-react';
+import { 
+  Moon, 
+  Bell, 
+  Search as SearchIcon, 
+  Menu, 
+  X, 
+  Briefcase,
+  Code,
+  Trophy
+} from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -14,6 +23,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
 
 const Navbar = () => {
   const location = useLocation();
@@ -24,11 +42,31 @@ const Navbar = () => {
   // Navigation links
   const navLinks = [
     { name: 'Home', path: '/' },
-    { name: 'Profile', path: '/profile' },
-    { name: 'Feed', path: '/feed' }, // Added Feed link
+    { name: 'Feed', path: '/feed' },
     { name: 'Rankings', path: '/rankings' },
     { name: 'Analytics', path: '/analytics' },
-    { name: 'Jobs', path: '/jobs' },
+  ];
+
+  // Opportunities dropdown items
+  const opportunitiesLinks = [
+    { 
+      name: 'Jobs', 
+      path: '/jobs',
+      description: 'Find full-time, part-time, and contract roles',
+      icon: <Briefcase className="h-5 w-5 text-primary" />
+    },
+    { 
+      name: 'Freelancing', 
+      path: '/freelancing',
+      description: 'Discover freelance projects and gigs',
+      icon: <Code className="h-5 w-5 text-primary" />
+    },
+    { 
+      name: 'Hackathons', 
+      path: '/hackathons',
+      description: 'Participate in coding competitions and events',
+      icon: <Trophy className="h-5 w-5 text-primary" />
+    },
   ];
 
   // Mock notifications
@@ -86,6 +124,37 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
+            
+            {/* Opportunities dropdown using Navigation Menu */}
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger>Opportunities</NavigationMenuTrigger>
+                  <NavigationMenuContent className="bg-gray-900 border-gray-700">
+                    <ul className="grid w-[400px] gap-3 p-4">
+                      {opportunitiesLinks.map((item) => (
+                        <li key={item.path}>
+                          <NavigationMenuLink asChild>
+                            <Link
+                              to={item.path}
+                              className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-gray-800 hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                            >
+                              <div className="flex items-center gap-2">
+                                {item.icon}
+                                <div className="text-sm font-medium">{item.name}</div>
+                              </div>
+                              <p className="line-clamp-2 text-sm leading-snug text-gray-400">
+                                {item.description}
+                              </p>
+                            </Link>
+                          </NavigationMenuLink>
+                        </li>
+                      ))}
+                    </ul>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
             
             {/* Notifications dropdown */}
             <DropdownMenu>
@@ -192,6 +261,23 @@ const Navbar = () => {
                   {link.name}
                 </Link>
               ))}
+              
+              {/* Mobile Opportunities Section */}
+              <div className="px-3 py-2 font-medium">Opportunities</div>
+              {opportunitiesLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className="block px-3 py-2 pl-6 rounded-md hover:bg-gray-800 text-gray-400"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <div className="flex items-center gap-2">
+                    {link.icon}
+                    <span>{link.name}</span>
+                  </div>
+                </Link>
+              ))}
+              
               <Link
                 to="/notifications"
                 className="flex justify-between items-center px-3 py-2 rounded-md hover:bg-gray-800"

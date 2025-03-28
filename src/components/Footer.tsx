@@ -55,8 +55,13 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/social" className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary text-sm transition-colors">
-                  Developer Network
+                <Link to="/freelancing" className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary text-sm transition-colors">
+                  Freelancing
+                </Link>
+              </li>
+              <li>
+                <Link to="/hackathons" className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary text-sm transition-colors">
+                  Hackathons
                 </Link>
               </li>
             </ul>
@@ -66,24 +71,24 @@ const Footer = () => {
             <h3 className="font-semibold text-sm tracking-wider uppercase mb-4">Resources</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary text-sm transition-colors">
+                <Link to="/docs/documentation" className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary text-sm transition-colors">
                   Documentation
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary text-sm transition-colors">
+                <Link to="/docs/api-reference" className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary text-sm transition-colors">
                   API Reference
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary text-sm transition-colors">
+                <Link to="/docs/github-integration" className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary text-sm transition-colors">
                   GitHub Integration
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary text-sm transition-colors">
+                <Link to="/info/blog" className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary text-sm transition-colors">
                   Blog & Updates
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -92,24 +97,24 @@ const Footer = () => {
             <h3 className="font-semibold text-sm tracking-wider uppercase mb-4">About</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary text-sm transition-colors">
+                <Link to="/info/our-mission" className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary text-sm transition-colors">
                   Our Mission
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary text-sm transition-colors">
+                <Link to="/info/privacy-policy" className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary text-sm transition-colors">
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary text-sm transition-colors">
+                <Link to="/info/terms-of-service" className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary text-sm transition-colors">
                   Terms of Service
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary text-sm transition-colors">
+                <Link to="/info/contact-us" className="text-gray-600 hover:text-primary dark:text-gray-400 dark:hover:text-primary text-sm transition-colors">
                   Contact Us
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
