@@ -25,7 +25,6 @@ import OurMission from "./pages/info/OurMission";
 import PrivacyPolicy from "./pages/info/PrivacyPolicy";
 import TermsOfService from "./pages/info/TermsOfService";
 import ContactUs from "./pages/info/ContactUs";
-import LearnMore from "./pages/info/LearnMore";
 import Documentation from "./pages/docs/Documentation";
 import ApiReference from "./pages/docs/ApiReference";
 import GithubIntegration from "./pages/docs/GithubIntegration";
@@ -69,7 +68,6 @@ const App = () => {
             <Route path="/info/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/info/terms-of-service" element={<TermsOfService />} />
             <Route path="/info/contact-us" element={<ContactUs />} />
-            <Route path="/info/learn-more" element={<LearnMore />} />
             <Route path="/info/blog" element={<Blog />} />
             
             {/* Documentation pages */}
