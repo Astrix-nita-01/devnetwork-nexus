@@ -9,7 +9,8 @@ import {
   X, 
   Briefcase,
   Code,
-  Trophy
+  Trophy,
+  Info
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -67,6 +68,12 @@ const Navbar = () => {
       description: 'Participate in coding competitions and events',
       icon: <Trophy className="h-5 w-5 text-primary" />
     },
+    { 
+      name: 'Learn More', 
+      path: '/info/learn-more',
+      description: 'Discover all the features of our platform',
+      icon: <Info className="h-5 w-5 text-primary" />
+    },
   ];
 
   // Mock notifications
@@ -95,7 +102,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <span className="text-2xl font-bold text-primary">DevConnect</span>
+            <span className="text-2xl font-bold text-primary animate-pulse">DevConnect</span>
           </Link>
 
           {/* Search bar - desktop */}
@@ -110,7 +117,7 @@ const Navbar = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <Button type="submit" variant="default" className="ml-2">Search</Button>
+            <Button type="submit" variant="default" className="ml-2 transition-all hover:scale-105">Search</Button>
           </form>
 
           {/* Desktop navigation */}
@@ -119,7 +126,7 @@ const Navbar = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`nav-link ${location.pathname === link.path ? 'active' : ''}`}
+                className={`nav-link ${location.pathname === link.path ? 'active' : ''} transition-all hover:text-primary hover:scale-105`}
               >
                 {link.name}
               </Link>
@@ -129,11 +136,11 @@ const Navbar = () => {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger>Opportunities</NavigationMenuTrigger>
+                  <NavigationMenuTrigger className="transition-all hover:text-primary">Opportunities</NavigationMenuTrigger>
                   <NavigationMenuContent className="bg-gray-900 border-gray-700">
                     <ul className="grid w-[400px] gap-3 p-4">
                       {opportunitiesLinks.map((item) => (
-                        <li key={item.path}>
+                        <li key={item.path} className="transition-all hover:-translate-y-1 duration-200">
                           <NavigationMenuLink asChild>
                             <Link
                               to={item.path}
@@ -220,7 +227,7 @@ const Navbar = () => {
             <Button 
               variant="ghost" 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="px-2"
+              className="px-2 transition-all hover:rotate-180 duration-300"
             >
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </Button>
@@ -229,7 +236,7 @@ const Navbar = () => {
 
         {/* Mobile menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 px-2 space-y-4">
+          <div className="md:hidden py-4 px-2 space-y-4 animate-fade-in">
             <form onSubmit={handleSearch} className="flex items-center">
               <div className="relative w-full">
                 <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -251,10 +258,10 @@ const Navbar = () => {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`block px-3 py-2 rounded-md ${
+                  className={`block px-3 py-2 rounded-md transition-all duration-200 ${
                     location.pathname === link.path
                       ? 'bg-gray-800 text-white'
-                      : 'hover:bg-gray-800'
+                      : 'hover:bg-gray-800 hover:translate-x-1'
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -268,7 +275,7 @@ const Navbar = () => {
                 <Link
                   key={link.path}
                   to={link.path}
-                  className="block px-3 py-2 pl-6 rounded-md hover:bg-gray-800 text-gray-400"
+                  className="block px-3 py-2 pl-6 rounded-md hover:bg-gray-800 text-gray-400 transition-all duration-200 hover:translate-x-1"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   <div className="flex items-center gap-2">
