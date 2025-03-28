@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
 interface FeedPost {
   id: number;
@@ -135,7 +135,6 @@ const FeedSection: React.FC<FeedSectionProps> = ({ categoryFilter = "all" }) => 
   
   const [feedPosts, setFeedPosts] = useState<FeedPost[]>([]);
 
-  // Filter posts based on category
   useEffect(() => {
     let filteredPosts = [...allPosts];
     
@@ -143,7 +142,6 @@ const FeedSection: React.FC<FeedSectionProps> = ({ categoryFilter = "all" }) => 
       filteredPosts = allPosts.filter(post => post.category === categoryFilter);
     }
     
-    // Apply sorting
     if (sortOrder === 'latest') {
       filteredPosts.sort((a, b) => b.id - a.id);
     } else {
@@ -169,7 +167,6 @@ const FeedSection: React.FC<FeedSectionProps> = ({ categoryFilter = "all" }) => 
     <section className="py-8">
       <div className="container mx-auto">
         <div className="lg:flex gap-8">
-          {/* Left sidebar - categories */}
           <div className="hidden lg:block w-56 shrink-0">
             <ScrollReveal>
               <Card className="bg-gray-900/80 backdrop-blur-sm border-gray-800/50 sticky top-24">
@@ -221,7 +218,6 @@ const FeedSection: React.FC<FeedSectionProps> = ({ categoryFilter = "all" }) => 
             </ScrollReveal>
           </div>
           
-          {/* Main feed area */}
           <div className="flex-1">
             <div className="mb-6 flex justify-between items-center">
               <ScrollReveal>
@@ -312,7 +308,6 @@ const FeedSection: React.FC<FeedSectionProps> = ({ categoryFilter = "all" }) => 
             </div>
           </div>
           
-          {/* Right sidebar - suggested content */}
           <div className="hidden xl:block w-64 shrink-0">
             <ScrollReveal>
               <Card className="bg-gray-900/80 backdrop-blur-sm border-gray-800/50 sticky top-24">
@@ -347,7 +342,8 @@ const FeedSection: React.FC<FeedSectionProps> = ({ categoryFilter = "all" }) => 
                     ].map((dev, i) => (
                       <div key={i} className="flex items-center gap-3 pb-3 border-b border-gray-800/30 last:border-0">
                         <Avatar className="h-8 w-8 ring-2 ring-primary/10 bg-primary/5">
-                          <div>{dev.name.split(' ').map(n => n[0]).join('')}</div>
+                          <AvatarImage src="https://via.placeholder.com/150" />
+                          <AvatarFallback>{dev.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                         </Avatar>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium truncate">{dev.name}</p>
