@@ -2,11 +2,11 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Code, Github, Heart, MessageSquare, Share2, Bookmark, Copy, MoreHorizontal, ThumbsUp } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import ScrollReveal from './ScrollReveal';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -96,7 +96,7 @@ const EnhancedFeedPost: React.FC<FeedPostProps> = ({ post, index }) => {
           <div className="flex justify-between items-start">
             <div className="flex items-start gap-3">
               <Avatar className="h-12 w-12 ring-2 ring-primary/20 bg-primary/10 text-primary">
-                <div className="text-lg font-semibold">{post.author.avatar}</div>
+                <AvatarFallback>{post.author.avatar}</AvatarFallback>
               </Avatar>
               <div>
                 <div className="font-semibold text-lg leading-none">{post.author.name}</div>
