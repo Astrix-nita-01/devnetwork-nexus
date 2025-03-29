@@ -1,14 +1,15 @@
+
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
+  Moon, 
   Bell, 
   Search as SearchIcon, 
   Menu, 
   X, 
   Briefcase,
   Code,
-  Trophy,
-  Lightbulb
+  Trophy
 } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -31,7 +32,6 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import ThemeToggle from './ThemeToggle';
 
 const Navbar = () => {
   const location = useLocation();
@@ -39,6 +39,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Navigation links
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Feed', path: '/feed' },
@@ -46,6 +47,7 @@ const Navbar = () => {
     { name: 'Analytics', path: '/analytics' },
   ];
 
+  // Opportunities dropdown items
   const opportunitiesLinks = [
     { 
       name: 'Jobs', 
@@ -65,14 +67,9 @@ const Navbar = () => {
       description: 'Participate in coding competitions and events',
       icon: <Trophy className="h-5 w-5 text-primary" />
     },
-    { 
-      name: 'Learn More', 
-      path: '/learn-more',
-      description: 'Explore additional opportunities and resources',
-      icon: <Lightbulb className="h-5 w-5 text-primary" />
-    },
   ];
 
+  // Mock notifications
   const notifications = [
     { id: 1, type: 'follow', message: 'John Doe started following you', time: '2 hours ago', read: false },
     { id: 2, type: 'like', message: 'Your post received 5 new likes', time: '3 hours ago', read: false },
@@ -82,8 +79,10 @@ const Navbar = () => {
   
   const unreadCount = notifications.filter(n => !n.read).length;
 
+  // Handle search submission
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
+    // In a real implementation, this would trigger a search request
     toast({
       title: "Search initiated",
       description: `Searching for: ${searchQuery}`,
@@ -91,20 +90,22 @@ const Navbar = () => {
   };
 
   return (
-    <header className="fixed w-full z-50 bg-gray-950 border-b border-gray-800 shadow-md backdrop-blur-sm bg-opacity-90 dark:bg-gray-950/90 dark:border-gray-800 transition-colors duration-300">
+    <header className="fixed w-full z-50 bg-gray-950 border-b border-gray-800 shadow-md backdrop-blur-sm bg-opacity-90">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
+          {/* Logo */}
           <Link to="/" className="flex items-center">
             <span className="text-2xl font-bold text-primary">DevConnect</span>
           </Link>
 
+          {/* Search bar - desktop */}
           <form onSubmit={handleSearch} className="hidden md:flex items-center max-w-md flex-1 mx-4">
             <div className="relative w-full">
               <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
                 type="text"
                 placeholder="Search developers, companies, or jobs..."
-                className="pl-10 bg-gray-900 border-gray-700 focus:border-primary dark:bg-gray-900 dark:border-gray-700"
+                className="pl-10 bg-gray-900 border-gray-700 focus:border-primary"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -112,6 +113,7 @@ const Navbar = () => {
             <Button type="submit" variant="default" className="ml-2">Search</Button>
           </form>
 
+          {/* Desktop navigation */}
           <nav className="hidden md:flex items-center space-x-4">
             {navLinks.map((link) => (
               <Link
@@ -123,14 +125,15 @@ const Navbar = () => {
               </Link>
             ))}
             
+            {/* Opportunities dropdown using Navigation Menu */}
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="animate-fade-in">Opportunities</NavigationMenuTrigger>
-                  <NavigationMenuContent className="bg-gray-900 border-gray-700 dark:bg-gray-900 dark:border-gray-700">
-                    <ul className="grid w-[400px] gap-3 p-4 animate-scale-in">
+                  <NavigationMenuTrigger>Opportunities</NavigationMenuTrigger>
+                  <NavigationMenuContent className="bg-gray-900 border-gray-700">
+                    <ul className="grid w-[400px] gap-3 p-4">
                       {opportunitiesLinks.map((item) => (
-                        <li key={item.path} className="animate-fade-in" style={{animationDelay: `${opportunitiesLinks.indexOf(item) * 50}ms`}}>
+                        <li key={item.path}>
                           <NavigationMenuLink asChild>
                             <Link
                               to={item.path}
@@ -153,8 +156,7 @@ const Navbar = () => {
               </NavigationMenuList>
             </NavigationMenu>
             
-            <ThemeToggle />
-            
+            {/* Notifications dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="relative">
@@ -190,6 +192,7 @@ const Navbar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
+            {/* User avatar dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Avatar className="cursor-pointer">
@@ -212,8 +215,8 @@ const Navbar = () => {
             </DropdownMenu>
           </nav>
 
-          <div className="md:hidden flex items-center gap-2">
-            <ThemeToggle />
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center">
             <Button 
               variant="ghost" 
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -224,8 +227,9 @@ const Navbar = () => {
           </div>
         </div>
 
+        {/* Mobile menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-4 px-2 space-y-4 animate-fade-in">
+          <div className="md:hidden py-4 px-2 space-y-4">
             <form onSubmit={handleSearch} className="flex items-center">
               <div className="relative w-full">
                 <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
@@ -258,6 +262,7 @@ const Navbar = () => {
                 </Link>
               ))}
               
+              {/* Mobile Opportunities Section */}
               <div className="px-3 py-2 font-medium">Opportunities</div>
               {opportunitiesLinks.map((link) => (
                 <Link
